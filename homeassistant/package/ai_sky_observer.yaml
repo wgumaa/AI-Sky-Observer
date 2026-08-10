@@ -1,0 +1,112 @@
+##########################################################
+#
+# AI Sky Observer
+# Version: 0.1.0
+#
+##########################################################
+
+##########################################################
+# Helpers
+##########################################################
+
+input_boolean:
+
+  ai_sky_observer_enabled:
+    name: AI Sky Observer Enabled
+    icon: mdi:weather-partly-cloudy
+    initial: true
+
+##########################################################
+# Scripts
+##########################################################
+
+script:
+
+  ai_sky_observer_test:
+    alias: AI Sky Observer Test
+    mode: single
+
+    sequence:
+
+      - action: llmvision.image_analyzer
+        response_variable: ai_result
+
+        data:
+          provider: 01KZNE1DNHTE5CS7DEV5T9YG6H
+
+          max_tokens: 150
+
+          response_format: json
+
+          image_entity:
+            - camera.entry_camera_high_resolution_channel
+            - camera.camera_5_high_resolution_channel
+
+          include_filename: true
+
+          structure: |-
+            {
+              "type": "object",
+              "properties": {
+                "front": {
+                  "type": "object",
+                  "properties": {
+                    "ai_cloud_cover": { "type": "integer" },
+                    "confidence": { "type": "integer" },
+                    "sun_visible": { "type": "boolean" }
+                  },
+                  "required": [
+                    "ai_cloud_cover",
+                    "confidence",
+                    "sun_visible"
+                  ]
+                },
+                "back": {
+                  "type": "object",
+                  "properties": {
+                    "ai_cloud_cover": { "type": "integer" },
+                    "confidence": { "type": "integer" },
+                    "sun_visible": { "type": "boolean" }
+                  },
+                  "required": [
+                    "ai_cloud_cover",
+                    "confidence",
+                    "sun_visible"
+                  ]
+                }
+              },
+              "required": [
+                "front",
+                "back"
+              ]
+            }
+
+          message: |-
+            You are an expert meteorological observer.
+
+            You have been given TWO outdoor security camera images.
+
+            Image 1 is the FRONT of the property.
+            Image 2 is the REAR of the property.
+
+            Analyze EACH image independently.
+
+            For EACH image determine:
+
+            - Cloud cover percentage (0-100)
+            - Confidence (0-100)
+            - Whether the sun is directly visible (true/false)
+
+            Return ONLY valid JSON.
+
+      - action: persistent_notification.create
+        data:
+          title: AI Sky Observer
+          message: >
+            Front: {{ ai_result.structured_response.front.ai_cloud_cover }}%
+
+            Back: {{ ai_result.structured_response.back.ai_cloud_cover }}%
+
+            Front Sun: {{ ai_result.structured_response.front.sun_visible }}
+
+            Back Sun: {{ ai_result.structured_response.back.sun_visible }}
