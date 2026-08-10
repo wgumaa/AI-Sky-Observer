@@ -236,6 +236,7 @@ template:
       - name: AI Sky Observer Cloud Cover
         unique_id: ai_sky_observer_cloud_cover
         unit_of_measurement: "%"
+        icon: mdi:weather-cloudy
         state: >
           {% set entry = states('input_number.ai_sky_observer_entry_cloud_cover') | float(0) %}
           {% set garden = states('input_number.ai_sky_observer_garden_cloud_cover') | float(0) %}
@@ -246,3 +247,55 @@ template:
           garden_cloud_cover: "{{ states('input_number.ai_sky_observer_garden_cloud_cover') }}"
           entry_confidence: "{{ states('input_number.ai_sky_observer_entry_confidence') }}"
           garden_confidence: "{{ states('input_number.ai_sky_observer_garden_confidence') }}"
+
+      - name: AI Sky Observer Entry Cloud Cover
+        unique_id: ai_sky_observer_entry_cloud_cover
+        unit_of_measurement: "%"
+        icon: mdi:weather-cloudy
+        state: >
+          {{ states('input_number.ai_sky_observer_entry_cloud_cover') }}
+
+      - name: AI Sky Observer Garden Cloud Cover
+        unique_id: ai_sky_observer_garden_cloud_cover
+        unit_of_measurement: "%"
+        icon: mdi:weather-cloudy
+        state: >
+          {{ states('input_number.ai_sky_observer_garden_cloud_cover') }}
+
+      - name: AI Sky Observer Entry Confidence
+        unique_id: ai_sky_observer_entry_confidence
+        unit_of_measurement: "%"
+        icon: mdi:check-decagram
+        state: >
+          {{ states('input_number.ai_sky_observer_entry_confidence') }}
+
+      - name: AI Sky Observer Garden Confidence
+        unique_id: ai_sky_observer_garden_confidence
+        unit_of_measurement: "%"
+        icon: mdi:check-decagram
+        state: >
+          {{ states('input_number.ai_sky_observer_garden_confidence') }}
+
+  - binary_sensor:
+
+      - name: AI Sky Observer Entry Sun Visible
+        unique_id: ai_sky_observer_entry_sun_visible
+        state: >
+          {{ is_state('input_boolean.ai_sky_observer_entry_sun_visible', 'on') }}
+        icon: >
+          {% if is_state('input_boolean.ai_sky_observer_entry_sun_visible', 'on') %}
+            mdi:white-balance-sunny
+          {% else %}
+            mdi:weather-cloudy
+          {% endif %}
+
+      - name: AI Sky Observer Garden Sun Visible
+        unique_id: ai_sky_observer_garden_sun_visible
+        state: >
+          {{ is_state('input_boolean.ai_sky_observer_garden_sun_visible', 'on') }}
+        icon: >
+          {% if is_state('input_boolean.ai_sky_observer_garden_sun_visible', 'on') %}
+            mdi:white-balance-sunny
+          {% else %}
+            mdi:weather-cloudy
+          {% endif %}
