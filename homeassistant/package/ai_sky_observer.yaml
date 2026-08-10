@@ -76,7 +76,7 @@ input_datetime:
 script:
 
   ai_sky_observer_analyze:
-    alias: AI Sky Observer Analyzet
+    alias: AI Sky Observer Analyzer
     mode: single
 
     sequence:
