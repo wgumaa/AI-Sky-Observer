@@ -202,11 +202,6 @@ script:
         data:
           datetime: "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
  
-      - action: persistent_notification.create
-        data:
-          title: AI Result
-          message: "{{ ai_result | tojson }}"
-
 ##########################################################
 # Automation
 ##########################################################
@@ -229,3 +224,25 @@ automation:
       - action: script.ai_sky_observer_analyze
 
     mode: single
+
+##########################################################
+# Template Sensors
+##########################################################
+
+template:
+
+  - sensor:
+
+      - name: AI Sky Observer Cloud Cover
+        unique_id: ai_sky_observer_cloud_cover
+        unit_of_measurement: "%"
+        state: >
+          {% set entry = states('input_number.ai_sky_observer_entry_cloud_cover') | float(0) %}
+          {% set garden = states('input_number.ai_sky_observer_garden_cloud_cover') | float(0) %}
+          {{ ((entry + garden) / 2) | round(0) }}
+
+        attributes:
+          entry_cloud_cover: "{{ states('input_number.ai_sky_observer_entry_cloud_cover') }}"
+          garden_cloud_cover: "{{ states('input_number.ai_sky_observer_garden_cloud_cover') }}"
+          entry_confidence: "{{ states('input_number.ai_sky_observer_entry_confidence') }}"
+          garden_confidence: "{{ states('input_number.ai_sky_observer_garden_confidence') }}"
