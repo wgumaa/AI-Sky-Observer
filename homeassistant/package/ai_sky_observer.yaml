@@ -75,8 +75,8 @@ input_datetime:
 
 script:
 
-  ai_sky_observer_test:
-    alias: AI Sky Observer Test
+  ai_sky_observer_analyze:
+    alias: AI Sky Observer Analyzet
     mode: single
 
     sequence:
@@ -97,7 +97,7 @@ script:
             {
               "type": "object",
               "properties": {
-                "front": {
+                "entry": {
                   "type": "object",
                   "properties": {
                     "ai_cloud_cover": { "type": "integer" },
@@ -110,7 +110,7 @@ script:
                     "sun_visible"
                   ]
                 },
-                "back": {
+                "garden": {
                   "type": "object",
                   "properties": {
                     "ai_cloud_cover": { "type": "integer" },
@@ -125,8 +125,8 @@ script:
                 }
               },
               "required": [
-                "front",
-                "back"
+                "entry",
+                "garden"
               ]
             }
 
@@ -135,8 +135,8 @@ script:
 
             You have been given TWO outdoor security camera images.
 
-            Image 1 is the FRONT of the property.
-            Image 2 is the REAR of the property.
+            Image 1 is the ENTRY of the property.
+            Image 2 is the GARDEN of the property.
 
             Analyze EACH image independently.
 
@@ -152,29 +152,29 @@ script:
         target:
           entity_id: input_number.ai_sky_observer_entry_cloud_cover
         data:
-          value: "{{ ai_result.structured_response.front.ai_cloud_cover }}"
+          value: "{{ ai_result.structured_response.entry.ai_cloud_cover }}"
           
       - action: input_number.set_value
         target:
           entity_id: input_number.ai_sky_observer_garden_cloud_cover
         data:
-          value: "{{ ai_result.structured_response.back.ai_cloud_cover }}"
+          value: "{{ ai_result.structured_response.garden.ai_cloud_cover }}"
 
       - action: input_number.set_value
         target:
           entity_id: input_number.ai_sky_observer_entry_confidence
         data:
-          value: "{{ ai_result.structured_response.front.confidence }}"
+          value: "{{ ai_result.structured_response.entry.confidence }}"
 
       - action: input_number.set_value
         target:
           entity_id: input_number.ai_sky_observer_garden_confidence
         data:
-          value: "{{ ai_result.structured_response.back.confidence }}"
+          value: "{{ ai_result.structured_response.garden.confidence }}"
           
       - if:
           - condition: template
-            value_template: "{{ ai_result.structured_response.front.sun_visible }}"
+            value_template: "{{ ai_result.structured_response.entry.sun_visible }}"
         then:
           - action: input_boolean.turn_on
             target:
@@ -186,7 +186,7 @@ script:
 
       - if:
           - condition: template
-            value_template: "{{ ai_result.structured_response.back.sun_visible }}"
+            value_template: "{{ ai_result.structured_response.garden.sun_visible }}"
         then:
           - action: input_boolean.turn_on
             target:
@@ -207,4 +207,25 @@ script:
           title: AI Result
           message: "{{ ai_result | tojson }}"
 
+##########################################################
+# Automation
+##########################################################
 
+automation:
+
+  - alias: AI Sky Observer - Analyze Sky
+    id: ai_sky_observer_analyze
+
+    triggers:
+      - trigger: time_pattern
+        minutes: "/10"
+
+    conditions:
+      - condition: state
+        entity_id: input_boolean.ai_sky_observer_enabled
+        state: "on"
+
+    actions:
+      - action: script.ai_sky_observer_analyze
+
+    mode: single
