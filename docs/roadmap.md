@@ -1,40 +1,68 @@
-# AI Sky Observer Roadmap
+# 🛣️ AI Sky Observer Roadmap
 
-## Milestone 1 — Cloud Observer
+This roadmap outlines the planned evolution of **AI Sky Observer**.
 
-- AI Cloud Cover
-- Sun Visibility
-- Confidence Score
-- Multi-camera support
+Features may change as the project develops, but this provides the current direction.
 
 ---
 
-## Milestone 2 — Sun Observer
+# Milestone 1 — Cloud Observer (v0.1.x)
 
-- Sky Brightness
-- Sky Condition
-- Direct Sunlight Detection
+Core AI sky analysis.
 
----
+### Features
 
-## Milestone 3 — Camera Health
-
-- Spider Web Detection
-- Dirty Lens Detection
-- Condensation Detection
-- Camera Obstruction
+- ✅ AI Cloud Cover
+- ✅ Sun Visibility
+- ✅ Analysis Confidence
+- ✅ Multi-camera Support
 
 ---
 
-## Milestone 4 — Weather Observer
+# Milestone 2 — Sun Observer
 
-- Rain Detection
-- Snow Detection
-- Fog Detection
-- Smoke Detection
+Expand analysis beyond cloud cover.
+
+### Planned Features
+
+- ☀️ Sky Brightness
+- 🌤 Sky Condition Classification
+- ☀️ Direct Sunlight Detection
 
 ---
 
-## Version 1.0
+# Milestone 3 — Camera Health
 
-Stable public release.
+Automatically monitor camera quality.
+
+### Planned Features
+
+- 🕸 Spider Web Detection
+- 🧼 Dirty Lens Detection
+- 💧 Condensation Detection
+- 🚧 Camera Obstruction Detection
+
+---
+
+# Milestone 4 — Weather Observer
+
+Detect additional weather conditions directly from cameras.
+
+### Planned Features
+
+- 🌧 Rain Detection
+- ❄️ Snow Detection
+- 🌫 Fog Detection
+- 🔥 Smoke Detection
+
+---
+
+# Version 1.0
+
+A stable public release featuring:
+
+- Reliable AI cloud analysis
+- Camera health monitoring
+- Expanded weather detection
+- Comprehensive documentation
+- Community feedback incorporated
