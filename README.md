@@ -16,7 +16,7 @@ AI Sky Observer was born while developing **Adaptive Cover Controller**.
 
 One of the biggest challenges with automating blinds, curtains and shutters is determining whether the sun is actually shining on your home.
 
-Most Home Assistant automations rely on cloud cover values from online weather services. While these services are excellent for forecasting regional weather, they estimate conditions across a large geographic area—not the sky directly above your property.
+Most Home Assistant automations rely on cloud cover values from online weather services. While these services are excellent for forecasting regional weather, they estimate conditions across a large geographic area - not the sky directly above your property.
 
 For automations that depend on direct sunlight, that distinction matters.
 
