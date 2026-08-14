@@ -6,75 +6,47 @@
 
 > AI-powered local sky observation for Home Assistant using LLM Vision.
 
-AI Sky Observer transforms one or more outdoor cameras into intelligent local sky sensors, allowing Home Assistant to make decisions based on what is happening **above your home right now**, not just what a weather service predicts for your area.
+AI Sky Observer uses one or more outdoor cameras together with LLM Vision to estimate cloud cover and direct sun visibility from the sky above your home.
 
----
+Unlike online weather services that report conditions across a wider region, AI Sky Observer creates Home Assistant entities based on what your cameras actually observe, allowing automations to react to local conditions rather than forecasts.
 
-# Why AI Sky Observer Exists
+> [!NOTE]
+> **AI-assisted development**
+>
+> This project was developed using AI as an engineering tool - not as a replacement for engineering.
+>
+> AI assisted with brainstorming, code reviews, documentation and iterative refinement, while all architectural decisions, implementation choices and real-world testing were carried out by the project author.
 
-AI Sky Observer was born while developing **Adaptive Cover Controller**.
+## Features
 
-One of the biggest challenges with automating blinds, curtains and shutters is determining whether the sun is actually shining on your home.
+- AI cloud cover estimation
+- Direct sun visibility detection
+- Confidence scoring for each observation
+- Multi-camera support
+- Daylight-aware analysis
+- Native Home Assistant entities
+- Compatible with any LLM Vision provider
+- Optional Home Assistant dashboard
 
-Most Home Assistant automations rely on cloud cover values from online weather services. While these services are excellent for forecasting regional weather, they estimate conditions across a large geographic area - not the sky directly above your property.
-
-For automations that depend on direct sunlight, that distinction matters.
-
-A weather service may report **20% cloud cover** while a cloud temporarily blocks the sun over your house. Equally, it may report **80% cloud cover** while your home enjoys uninterrupted sunshine through a gap in the clouds.
-
-AI Sky Observer was created to bridge that gap.
-
----
-
-# Forecast vs Observation
-
-Weather services answer one question:
-
-> **"What is the weather like in my area?"**
-
-AI Sky Observer answers another:
-
-> **"What is happening above my home right now?"**
-
-Using one or more outdoor cameras together with LLM Vision, AI Sky Observer continuously observes the visible sky and converts those observations into Home Assistant sensor entities.
-
-Instead of forecasting the weather, it observes it.
-
----
-
-# Features
-
-- ☁️ AI Cloud Cover Estimation
-- ☀️ Direct Sun Visibility Detection
-- 🎯 AI Confidence Scoring
-- 📷 Multi-camera Support
-- 🌞 Daylight-aware Analysis
-- 🏡 Native Home Assistant Sensor Entities
-- 🤖 Compatible with any LLM Vision provider
-- 📊 Optional Home Assistant dashboard
-
----
-
-# Dashboard
+## Dashboard
 
 <p align="center">
   <img src="images/dashboard.png" alt="AI Sky Observer Dashboard" width="900">
 </p>
 
-An optional dashboard is included with the project, providing an overview of the current AI observations.
+An example dashboard is included with the project and provides an overview of the current observations.
 
 It displays:
 
-- Sky Condition
-- Average Cloud Cover
-- Camera 1 Cloud Cover
-- Camera 2 Cloud Cover
-- Camera 1 Sun Visibility
-- Camera 2 Sun Visibility
-- Camera 1 Confidence
-- Camera 2 Confidence
-- Last Analysis Time
-- Observer Status
+- Overall sky condition
+- Average cloud cover
+- Camera 1 cloud cover
+- Camera 2 cloud cover
+- Camera 1 sun visibility
+- Camera 2 sun visibility
+- Camera confidence scores
+- Last analysis time
+- Observer status
 
 Dashboard YAML:
 
@@ -82,60 +54,7 @@ Dashboard YAML:
 dashboard/ai_sky_observer_dashboard.yaml
 ```
 
----
-
-# What AI Sky Observer Creates
-
-The package creates the following Home Assistant entities.
-
-| Entity | Description |
-|---------|-------------|
-| AI Sky Observer Cloud Cover | Average cloud cover across all configured cameras |
-| AI Sky Observer Condition | Overall AI-derived sky condition |
-| Camera 1 Cloud Cover | Cloud cover estimated from Camera 1 |
-| Camera 2 Cloud Cover | Cloud cover estimated from Camera 2 |
-| Camera 1 Confidence | AI confidence score for Camera 1 |
-| Camera 2 Confidence | AI confidence score for Camera 2 |
-| Camera 1 Sun Visible | Direct sun detected by Camera 1 |
-| Camera 2 Sun Visible | Direct sun detected by Camera 2 |
-
----
-
-# Works Perfectly With Adaptive Cover Controller
-
-AI Sky Observer was originally developed to complement **Adaptive Cover Controller**.
-
-Instead of relying solely on forecast data, Adaptive Cover Controller can use real-time AI observations from your own cameras to determine whether direct sunlight is actually reaching your home.
-
-Together they create automations that respond to **local conditions**, rather than regional weather forecasts.
-
-**Adaptive Cover Controller**
-
-https://github.com/wgumaa/Adaptive-Cover-Controller
-
----
-
-# Requirements
-
-Before installing AI Sky Observer you will need:
-
-- Home Assistant
-- LLM Vision
-- One or more outdoor cameras
-- Any supported LLM Vision provider
-
-Supported providers include:
-
-- Google Gemini
-- OpenAI
-- Anthropic
-- Ollama
-- LocalAI
-- ...and many more
-
----
-
-# Installation
+## Installation
 
 Installation instructions are available in:
 
@@ -143,104 +62,129 @@ Installation instructions are available in:
 docs/installation.md
 ```
 
----
+## Requirements
 
-# Repository Structure
+Before installing AI Sky Observer you will need:
 
-```text
-AI-Sky-Observer/
-├── dashboard/
-│   └── ai_sky_observer_dashboard.yaml
-├── docs/
-│   ├── installation.md
-│   ├── dashboard.md
-│   ├── faq.md
-│   └── roadmap.md
-├── images/
-│   ├── banner.png
-│   └── dashboard.png
-├── package/
-│   └── ai_sky_observer.yaml
-├── CHANGELOG.md
-├── LICENSE
-└── README.md
-```
+- Home Assistant
+- LLM Vision
+- One or more outdoor cameras
+- Any LLM Vision supported provider
 
----
+The project has been tested with:
 
-# Design Philosophy
+- Google Gemini
+- OpenAI
+- Anthropic
+- Ollama
+- LocalAI
+
+## Entities
+
+The package creates the following Home Assistant entities.
+
+| Entity | Description |
+|---------|-------------|
+| AI Sky Observer Cloud Cover | Average cloud cover across all configured cameras |
+| AI Sky Observer Condition | Overall sky condition derived from AI observations |
+| Camera 1 Cloud Cover | Cloud cover estimated from Camera 1 |
+| Camera 2 Cloud Cover | Cloud cover estimated from Camera 2 |
+| Camera 1 Confidence | Confidence score for Camera 1 |
+| Camera 2 Confidence | Confidence score for Camera 2 |
+| Camera 1 Sun Visible | Direct sun detected by Camera 1 |
+| Camera 2 Sun Visible | Direct sun detected by Camera 2 |
+
+## Motivation
+
+AI Sky Observer was originally developed while building **Adaptive Cover Controller**.
+
+During testing it became clear that regional weather forecasts were not always accurate enough for sunlight-based automations.
+
+A weather service may report **20% cloud cover** while a cloud temporarily blocks the sun above your property. Likewise, it may report **80% cloud cover** while the sun is shining through a gap in the clouds.
+
+For automations that react to direct sunlight, those local variations matter.
+
+Rather than estimating conditions from a regional forecast, AI Sky Observer observes the visible sky directly from your own cameras and converts those observations into Home Assistant entities.
+
+## Design Philosophy
 
 AI Sky Observer follows one simple principle:
 
 > **AI observes. Home Assistant decides.**
 
-The AI never controls devices directly.
+The project never controls devices directly.
 
-Instead, it creates reliable Home Assistant sensor entities that can be used throughout Home Assistant in automations, scripts, dashboards and blueprints.
+Instead, it creates Home Assistant entities that can be used by automations, scripts, dashboards and blueprints, leaving all decision making inside Home Assistant.
 
----
+## Integration with Adaptive Cover Controller
 
-# Documentation
+AI Sky Observer was designed to work alongside **Adaptive Cover Controller**.
 
-Additional documentation is available in the **docs** folder.
+By combining the sun's position with real-time observations from your own cameras, Adaptive Cover Controller can make more informed decisions about when blinds, curtains and shutters should move.
 
-- 📖 Installation Guide
-- 🖥 Dashboard Guide
-- ❓ Frequently Asked Questions
-- 🛣 Project Roadmap
+Adaptive Cover Controller:
 
----
+https://github.com/wgumaa/Adaptive-Cover-Controller
 
-# Project Status
+## Documentation
 
-🚧 **Active Development**
+Additional documentation is available in the `docs` directory.
 
-Current release:
+- Installation Guide
+- Dashboard Guide
+- Frequently Asked Questions
+- Roadmap
 
-**v0.1.0**
+## Roadmap
 
-Suggestions, bug reports and feature requests are always welcome.
+Planned improvements include:
 
----
+### Sky Observation
 
-# Roadmap
+- Improved sky classification
+- Sky brightness estimation
+- Cloud density estimation
+- Sunrise and sunset visibility
 
-Future development includes:
+### Weather Observation
 
-### ☀️ Sky Observation
+- Rain detection
+- Snow detection
+- Fog detection
+- Smoke detection
+- Storm detection
 
-- Improved Sky Classification
-- Sky Brightness Estimation
-- Rain Detection
-- Snow Detection
-- Fog Detection
-- Smoke Detection
+### Camera Health
 
-### 📷 Camera Health
+- Spider web detection
+- Dirty lens detection
+- Camera health monitoring
 
-- Spider Web Detection
-- Dirty Lens Detection
-- Camera Health Monitoring
-
-### 🚀 Future Enhancements
+### Platform
 
 - Support for additional cameras
-- Historical sky statistics
+- Historical observations
 - Observation trends
-- Additional AI environmental sensors
+- Native Home Assistant integration
 
-See **docs/roadmap.md** for the complete roadmap.
+For additional detail, see:
 
----
+```text
+docs/roadmap.md
+```
 
-# Contributing
+## Contributing
 
-Contributions, suggestions and feedback are always welcome.
+Bug reports, feature requests and pull requests are always welcome.
 
-If you discover a bug, have an idea for a new feature or would like to contribute, feel free to open an Issue or submit a Pull Request.
+If you have ideas for improving the project, please open an issue or start a discussion.
 
----
+## Project Status
 
-# License
+AI Sky Observer is under active development.
+
+Community feedback plays an important role in shaping future releases.
+
+## License
 
 Released under the MIT License.
